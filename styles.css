@@ -1,0 +1,86 @@
+:root{
+    --bg:#f6f8fb;
+    --card:#ffffff;
+    --muted:#6b7280;
+    --accent:#0066ff;
+    --danger:#e53935;
+    --radius:10px;
+    --shadow: 0 6px 18px rgba(12,14,20,0.06);
+}
+
+
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+.site-header h1{margin:0;font-size:1.25rem}
+.site-header .lead{margin:0;color:var(--muted);font-size:0.95rem}
+.controls button{margin-left:8px;padding:6px 10px;border-radius:8px;border:0;background:var(--card);box-shadow:var(--shadow);cursor: pointer;}
+
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 18px;
+}
+
+.form-section, .display-section{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:16px;
+  box-shadow:var(--shadow);
+}
+.form-section h2{margin-top:0}
+.form-section form{display:grid;gap:8px}
+.form-section label{display:block;font-size:0.9rem;color:var(--muted)}
+/* .form-section input[type="text"],
+.form-section input[type="email"],
+.form-section input[type="tel"], */
+
+button{ background: var(--accent); color:white; padding: 10px 12px; border-radius: 8px; border: 0; cursor: pointer;; }
+button.ghost{background:transparent;color:var(--muted);border:1px solid rgba(11,19,32,0.06)}
+
+
+.drawer {
+    position: fixed;
+    top: 0;
+    right: -430px;
+    width: 380px;
+    height: 100%;
+    background: rgb(203, 209, 237);
+    box-shadow: -20px 0 40px rgba(2,6,23,0.15);
+    transition: right .28s ease;
+    z-index: 30;
+}
+
+/* added class in js ig...... */
+.drawer.open{right: 0px;}  
+.drawer-header {display: flex; justify-content: space-around; align-items: center;}
+#editForm label{display:block;font-size:0.9rem;padding: 5px;}
+
+.modal{
+    position: fixed; display: flex; visibility: hidden; align-items: center; justify-items: center; transition:opacity .18s ;
+    background:rgba(3,6,12,0.35);z-index:40;
+}
+
+
+
+
+
+
+
+
+.toast{position:fixed;right:18px;bottom:18px;min-width:200px;z-index:60; padding:10px; font-size: 50px; border: #0066ff 100px;}
+
+@media (max-width: 640px){
+    .container{grid-template-columns: 1fr; }
+}
+
+@media (min-width: 641px) and (max-width:1024px){
+    .container{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+

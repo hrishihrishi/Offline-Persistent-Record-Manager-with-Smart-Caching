@@ -44,7 +44,7 @@ function init() {
     form.addEventListener('submit', onAdd);
     $('resetBtn').addEventListener('click', () => form.reset());
     $('search').addEventListener('input', () => { currentPage = 1; renderTable(); })
-    //$('themeToggle').addEventListener('click', toggleTheme)
+    $('themeToggle').addEventListener('click', toggleTheme)
     $('closeDrawer').addEventListener('click', ()=>toggleDrawer(false));
     editForm.addEventListener('submit', onSaveEdit);
     $('confirmDelete').addEventListener('click', confirmDeleteAction);
@@ -108,31 +108,32 @@ function renderTable() {
 
     pageItems.forEach((s, idx) => {
         const tr = document.createElement('tr')
-        const initials = 'A'; //s.name.split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();
+        const initials = s.name.split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();
         const avatarHtml = `<div class="avatar" title="${s.name}" style="width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#eef2ff">${initials}</div>`;
 
         tr.innerHTML = `
             <td>${avatarHtml}</td>
-            <id>${escapeHtml(s.name)}<td/>        
-            <td>${escapeHtml(s.studentId)}<td/>        
-            <td>${escapeHtml(s.email)}<td/>        
-            <td>${escapeHtml(s.contact)}<td/>        
+            <td>${escapeHtml(s.name)}</td>
+            <td>${escapeHtml(s.studentId)}</td>       
+            <td>${escapeHtml(s.email)}</td>        
+            <td>${escapeHtml(s.contact)}</td>        
             <td class='actions'>
-                <button class='edit' data-idx="${start + idx}"> Edit <button/>
+                <button class='edit' data-idx="${start+idx}"> Edit </button>
                 <button class="delete" data-idx="${start+idx}">Delete</button>
             <td/>
             `;
         tbody.appendChild(tr);
+        tbody.querySelectorAll('button.edit').forEach(btn=>btn.addEventListener('click', e=>{
+            console.log('querySelectorAll function is called')
+            const idx = +e.currentTarget.dataset.idx;
+            openEdit(idx);
+        }))
+            tbody.querySelectorAll('button.delete').forEach(btn => btn.addEventListener('click', (e)=>{
+            const idx = +e.currentTarget.dataset.idx;
+            requestDelete(idx);
+        }));
     });
-    tbody.querySelectorAll('button.edit').forEach(btn=>btn.addEventListener('click', e=>{
-    console.log('querySelectorAll function is called')
-    const idx = +e.currentTarget.dataset.idx;
-    openEdit(idx);
-    }))
-    tbody.querySelectorAll('button.delete').forEach(btn => btn.addEventListener('click', (e)=>{
-    const idx = +e.currentTarget.dataset.idx;
-    requestDelete(idx);
-    }));
+    
 }
 
 
@@ -219,3 +220,10 @@ function onSaveEdit(e){
     
     
 // adjust scrollbar
+
+// toggleTheme
+function toggleTheme(){
+    document.body.classList.toggle('dark');
+    const btn = $('themeToggle')
+    btn.textContent = document.body.classList.contains('dark') ? '🌞' : '🌙';
+}

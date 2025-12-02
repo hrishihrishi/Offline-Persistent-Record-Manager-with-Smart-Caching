@@ -10,6 +10,10 @@
     <header class="site-header">
         <h1>STUDENT REGISTER</h1>
         <p class="lead">Add, Remove, Delete Students.. from this world !</p>
+        <div class="controls">
+            <button id="themeToggle">🌙</button>
+            <button id="exportCsvBtn">Export CSV</button>
+        </div>
     </header>
     <main class="container">
         <section class="form-section">
@@ -53,10 +57,10 @@
                     <thead>
                         <tr>
                             <th data-key="avatar">Avatar</th>
-                            <th data-key="studentId" class="sortable">Student ID ▲▼</th>
                             <th data-key="name" class="sortable">Name ▲▼</th>
-                            <th data-key="contact" class="sortable">Contact No ▲▼</th>
+                            <th data-key="studentId" class="sortable">Student ID ▲▼</th>
                             <th data-key="email" class="sortable">Email ▲▼</th>
+                            <th data-key="contact" class="sortable">Contact No ▲▼</th>
                         </tr>
                     </thead>
                     <tbody id="tbody">

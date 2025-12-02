@@ -1,6 +1,7 @@
 // place to store all data
 const LS_KEY = "Hrishikesh"
 let students = [];  //2d array
+let pendingDeleteIndex = null;
 const PAGE_SIZE = 8
 const currentPage = 1
 
@@ -18,11 +19,12 @@ function load() {
     students = v ? JSON.parse(v) : [];
 }
 
-// message displayer
-function toast(msg, timeout = 2200) {
+// TOAST message displayer
+function toast(msg, timeout = 2900) {
     const t = $('toast')
     t.textContent = msg;
     t.style.opacity = '1'
+    // Used some browser api functinos smart ain't I? :)
     setTimeout(() => t.style.opacity = '0', timeout)
 }
 
@@ -33,26 +35,21 @@ function validEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
 function generateId() { return 'S' + Date.now().toString().slice(-6) + Math.floor(Math.random() * 90 + 10) }
 
 
-/* ---------- Initialization ---------- */
+/* Initializes all event Listners*/
 document.addEventListener('DOMContentLoaded', init);
-
 function init() {
     load();
-
     const form = $('studentForm')
     const editForm = $('editForm')
     form.addEventListener('submit', onAdd);
     $('resetBtn').addEventListener('click', () => form.reset());
     $('search').addEventListener('input', () => { currentPage = 1; renderTable(); })
-    //$('themeToggle').addEventListener('click', toggleTheme)
+    $('themeToggle').addEventListener('click', toggleTheme)
     $('closeDrawer').addEventListener('click', ()=>toggleDrawer(false));
     editForm.addEventListener('submit', onSaveEdit);
     $('confirmDelete').addEventListener('click', confirmDeleteAction);
-
-
+    $('cancelDelete').addEventListener('click', ()=>toggleModal(false))
     renderTable();
-
-
 }
 
 // validates,parses and adds record
@@ -83,16 +80,12 @@ function onAdd(e) {
     $('autoId').checked = true;
     toast('record added')
     renderTable();
-
 }
-
 
 function getFiltered() {
     let arr = students.slice();
     return arr
 }
-
-
 
 // rendering table
 function renderTable() {
@@ -108,31 +101,32 @@ function renderTable() {
 
     pageItems.forEach((s, idx) => {
         const tr = document.createElement('tr')
-        const initials = 'A'; //s.name.split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();
+        const initials = s.name.split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();
         const avatarHtml = `<div class="avatar" title="${s.name}" style="width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#eef2ff">${initials}</div>`;
 
         tr.innerHTML = `
             <td>${avatarHtml}</td>
-            <id>${escapeHtml(s.name)}<td/>        
-            <td>${escapeHtml(s.studentId)}<td/>        
-            <td>${escapeHtml(s.email)}<td/>        
-            <td>${escapeHtml(s.contact)}<td/>        
+            <td>${escapeHtml(s.name)}</td>
+            <td>${escapeHtml(s.studentId)}</td>       
+            <td>${escapeHtml(s.email)}</td>        
+            <td>${escapeHtml(s.contact)}</td>        
             <td class='actions'>
-                <button class='edit' data-idx="${start + idx}"> Edit <button/>
+                <button class='edit' data-idx="${start+idx}"> Edit </button>
                 <button class="delete" data-idx="${start+idx}">Delete</button>
             <td/>
             `;
         tbody.appendChild(tr);
+        tbody.querySelectorAll('button.edit').forEach(btn=>btn.addEventListener('click', e=>{
+            console.log('querySelectorAll function is called')
+            const idx = +e.currentTarget.dataset.idx;
+            openEdit(idx);
+        }))
+            tbody.querySelectorAll('button.delete').forEach(btn => btn.addEventListener('click', (e)=>{
+            const idx = +e.currentTarget.dataset.idx;
+            requestDelete(idx);
+        }));
     });
-    tbody.querySelectorAll('button.edit').forEach(btn=>btn.addEventListener('click', e=>{
-    console.log('querySelectorAll function is called')
-    const idx = +e.currentTarget.dataset.idx;
-    openEdit(idx);
-    }))
-    tbody.querySelectorAll('button.delete').forEach(btn => btn.addEventListener('click', (e)=>{
-    const idx = +e.currentTarget.dataset.idx;
-    requestDelete(idx);
-    }));
+    
 }
 
 
@@ -141,8 +135,7 @@ function renderTable() {
 
 function escapeHtml(text) { return ('' + text).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch])); }
 
-
-// prepopulating edit drawer
+// prepopulating the side drawer
 function openEdit(index) {
     console.log('openEdit function is called')
     const s =students[index];
@@ -155,7 +148,7 @@ function openEdit(index) {
     toggleDrawer(true)
 }
 
-//toggling drawer
+// bringing side drawer to the screen by creating ".open" class
 function toggleDrawer(open) {
     console.log('toggleDrawer function is called')
     const d = $('editDrawer');
@@ -179,7 +172,7 @@ function onSaveEdit(e){
     if(!validEmail(email)){ toast('Invalid email'); return; }
     if(!onlyNumbers(contact) || contact.length < 10){ toast('Contact must be numeric and at least 10 digits'); return; }
     if(students.some((s, i) => s.studentId===studentId && i !== idx)){ toast('another student has same studentId'); return; }
-
+    // "..." operator only edits the needed keys while keeping the rest..
     students[idx] = { ...students[idx], name, studentId, email, contact };
     save();
     toggleDrawer(false);
@@ -188,34 +181,43 @@ function onSaveEdit(e){
 }
 
 
-    let pendingDeleteIndex = null;
 
-    function requestDelete(idx){
-        console.log('requestDelete called')
-        pendingDeleteIndex = idx;
-        toggleModal(true);
+
+function requestDelete(idx){
+    console.log('requestDelete called')
+    pendingDeleteIndex = idx;
+    toggleModal(true);
+}
+
+function toggleModal(show){
+    const m = $('confirmModal');
+    if(show){
+        m.style.visibility = 'visible';
+        m.style.opacity = '1';
+    } else {
+        m.style.visibility = 'hidden';
+        m.style.opacity = '0';
     }
-    function toggleModal(show){
-        const m = $('confirmModal');
-        if(show){
-            m.style.visibility = 'visible';
-            m.style.opacity = '1';
-        } else {
-            m.style.visibility = 'hidden';
-            m.style.opacity = '0';
-        }
-        m.setAttribute('aria-hidden', show ? 'false' : 'true');
-    }
-    function confirmDeleteAction(){
-        if(pendingDeleteIndex === null) return;
-        students.splice(pendingDeleteIndex, 1);
-        pendingDeleteIndex = null;
-        save();
-        toggleModal(false);
-        toast('Record deleted');
-        renderTable();
-        adjustScrollbar();
-    }
+    // m.setAttribute('aria-hidden', show ? 'false' : 'true');
+}
+
+function confirmDeleteAction(){
+    if(pendingDeleteIndex === null) return;
+    students.splice(pendingDeleteIndex, 1);
+    pendingDeleteIndex = null;
+    save();
+    toggleModal(false);
+    toast('Record deleted');
+    renderTable();
+    adjustScrollbar();
+}
     
     
 // adjust scrollbar
+
+// toggleTheme for Dark mode
+function toggleTheme(){
+    document.body.classList.toggle('dark');
+    const btn = $('themeToggle')
+    btn.textContent = document.body.classList.contains('dark') ? '🌞' : '🌙';
+}

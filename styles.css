@@ -1,24 +1,52 @@
-:root{
-    --bg:#f6f8fb;
-    --card:#ffffff;
-    --muted:#6b7280;
-    --accent:#0066ff;
-    --danger:#e53935;
-    --radius:10px;
-    --shadow: 0 6px 18px rgba(12,14,20,0.06);
+:root {
+    --bg: #f1f3f5;
+    --card: #ffffff;
+    --muted: #6b7280;
+    --accent: #58a6ff;
+    --danger: #e53935;
+    --radius: 10px;
+    --shadow: 0 6px 18px rgba(12, 14, 20, 0.06);
 }
 
+/* Dark mode config. ("dark" class is created in app.js) */
+body.dark {
+    --bg: #060b19;
+    --card: #0b1b3b;
+    --muted: #9aa4b2;
+    --accent: #58a6ff;
+    color: #e6eef8;
+}
 
+body {
+    background-color: var(--bg);
+}
 .site-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
 }
-.site-header h1{margin:0;font-size:1.25rem}
-.site-header .lead{margin:0;color:var(--muted);font-size:0.95rem}
-.controls button{margin-left:8px;padding:6px 10px;border-radius:8px;border:0;background:var(--card);box-shadow:var(--shadow);cursor: pointer;}
+.site-header h1 {
+    margin: 0;
+    font-size: 1.25rem
+}
 
+/* P tag */
+.site-header .lead {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem
+}
+
+/* buttons in site header */
+.controls button {
+    margin-left: 8px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 0;
+    background: var(--card);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+}
 
 .container {
     display: grid;
@@ -26,22 +54,94 @@
     gap: 18px;
 }
 
-.form-section, .display-section{
-  background:var(--card);
-  border-radius:var(--radius);
-  padding:16px;
-  box-shadow:var(--shadow);
+.form-section,.display-section {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    box-shadow: var(--shadow);
 }
-.form-section h2{margin-top:0}
-.form-section form{display:grid;gap:8px}
-.form-section label{display:block;font-size:0.9rem;color:var(--muted)}
+
+.form-section h2 {
+    margin-top: 0
+}
+
+.form-section form {
+    display: grid;
+    gap: 8px
+}
+
+.form-section label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--muted)
+}
+
 /* .form-section input[type="text"],
 .form-section input[type="email"],
 .form-section input[type="tel"], */
 
-button{ background: var(--accent); color:white; padding: 10px 12px; border-radius: 8px; border: 0; cursor: pointer;; }
-button.ghost{background:transparent;color:var(--muted);border:1px solid rgba(11,19,32,0.06)}
+button {
+    background-color: var(--accent);
+    color: rgb(244, 240, 240);
+    padding: 8px 12px;
+    border-radius: 9px;
+    border: 0;
+    cursor: pointer;
+    margin: 1px;
+}
+/* ghost buttons are light coloured ones */
+button.ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid rgba(3, 5, 8, 0.1)
+}
+/* search bar */
+.topbar {
+    display: flex;
+    justify-content: space-around;
+}
+/* outside div around table */
+.table-wrap {
+    max-height: 320px;
+    overflow: auto;
+    border-radius: 8px;
+    border: 5px solid rgba(0, 0, 0, 0.06);
+}
+/* the actual students table where students are listed */
+.students-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem
+}
+.students-table thead {
+    position: sticky;
+    top: 0;
+    background: var(--card);
+    z-index: 2
+}
 
+.students-table th, .students-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(11, 19, 32, 0.09)
+}
+
+.students-table tbody tr:hover {
+    background: rgba(0, 0, 0, 0.06)
+    /* should add some transitions */
+}
+.students-table img.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle
+}
+
+
+#exportCsvBtn {
+    background-color: #58a6ff;
+}
 
 .drawer {
     position: fixed;
@@ -49,38 +149,114 @@ button.ghost{background:transparent;color:var(--muted);border:1px solid rgba(11,
     right: -430px;
     width: 380px;
     height: 100%;
+    padding: 5px 25px;
     background: rgb(203, 209, 237);
-    box-shadow: -20px 0 40px rgba(2,6,23,0.15);
+    box-shadow: -20px 0 40px rgba(2, 6, 23, 0.15);
     transition: right .28s ease;
     z-index: 30;
 }
+/* added .open class in app.js */
+.drawer.open {
+    right: 0px;
+}
+.drawer-header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: xx-large;
+}
 
-/* added class in js ig...... */
-.drawer.open{right: 0px;}  
-.drawer-header {display: flex; justify-content: space-around; align-items: center;}
-#editForm label{display:block;font-size:0.9rem;padding: 5px;}
+#editForm label {
+    display: block;
+    font-size: 0.9rem;
+    padding: 5px;
+}
 
-.modal{
-    position: fixed; display: flex; visibility: hidden; align-items: center; justify-items: center; transition:opacity .18s ;
-    background:rgba(3,6,12,0.35);z-index:40;
+/* modal to confirm deletion */
+.modal {
+    position: fixed;
+    top: 30vh;
+    right: 40vw;
+    padding: 20px;
+    display: flex;
+    visibility: hidden;
+    align-items: center;
+    justify-items: center;
+    background: rgb(254, 180, 180);
+    z-index: 40;
+    border-radius: 10px;
+    box-shadow: 12px 12px 3px rgba(0, 0, 0, 0.28);
 }
 
 
-
-
-
-
-
-
-.toast{position:fixed;right:18px;bottom:18px;min-width:200px;z-index:60; padding:10px; font-size: 50px; border: #0066ff 100px;}
-
-@media (max-width: 640px){
-    .container{grid-template-columns: 1fr; }
+/* SOME ISSUE HERE IN TOAST !! */
+.toast {
+    position: fixed;
+    right: 28px;
+    bottom: 80px;
+    min-width: 10px;
+    z-index: 60;
+    padding: 10px;
+    font-size: 30px;
+    border: #0066ff 100px;
+    border-width: 10px;
 }
 
-@media (min-width: 641px) and (max-width:1024px){
-    .container{
+
+@media (max-width: 640px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+}
+@media (min-width: 641px) and (max-width:1024px) {
+    .container {
         grid-template-columns: 1fr 1fr;
     }
 }
+@media (min-width:1025px) {
+    .container {
+        grid-template-columns: 1fr 1.6fr
+    }
+    .table-wrap {
+        max-height: 520px
+    }
+}
 
+/* Table structure - only table should have 100% width */
+.students-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #333;
+}
+
+/* Cell borders and spacing - NO width on cells
+.students-table th,
+.students-table td {
+    border: 1px solid #333;
+    padding: 10px 12px;
+    text-align: left;
+}
+
+/* Header styling with distinct color */
+/* .students-table thead th {
+    background-color: #4a9d9d;
+    color: white;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+} */
+
+/* Body cell styling */
+/* .students-table tbody td {
+    background-color: #96D4D4;
+} */
+
+/* Hover effect */
+/* .students-table tbody tr:hover td {
+    background-color: #7ec4c4;
+}  */
+
+#edit_index {
+    visibility: hidden;
+}

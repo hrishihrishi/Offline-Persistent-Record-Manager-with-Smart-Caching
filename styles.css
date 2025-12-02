@@ -8,6 +8,7 @@
     --shadow: 0 6px 18px rgba(12, 14, 20, 0.06);
 }
 
+/* Dark mode config. ("dark" class is created in app.js) */
 body.dark {
     --bg: #060b19;
     --card: #0b1b3b;
@@ -19,25 +20,24 @@ body.dark {
 body {
     background-color: var(--bg);
 }
-
 .site-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
 }
-
 .site-header h1 {
     margin: 0;
     font-size: 1.25rem
 }
 
+/* P tag */
 .site-header .lead {
     margin: 0;
     color: var(--muted);
     font-size: 0.95rem
 }
 
+/* buttons in site header */
 .controls button {
     margin-left: 8px;
     padding: 6px 10px;
@@ -48,15 +48,13 @@ body {
     cursor: pointer;
 }
 
-
 .container {
     display: grid;
     grid-template-columns: 1fr 1.4fr;
     gap: 18px;
 }
 
-.form-section,
-.display-section {
+.form-section,.display-section {
     background: var(--card);
     border-radius: var(--radius);
     padding: 16px;
@@ -85,37 +83,36 @@ body {
 button {
     background-color: var(--accent);
     color: rgb(244, 240, 240);
-    padding: 10px 12px;
-    border-radius: 8px;
+    padding: 8px 12px;
+    border-radius: 9px;
     border: 0;
     cursor: pointer;
-    ;
+    margin: 1px;
 }
-
+/* ghost buttons are light coloured ones */
 button.ghost {
     background: transparent;
     color: var(--muted);
-    border: 1px solid rgba(11, 19, 32, 0.06)
+    border: 1px solid rgba(3, 5, 8, 0.1)
 }
-
+/* search bar */
 .topbar {
     display: flex;
     justify-content: space-around;
 }
-
+/* outside div around table */
 .table-wrap {
     max-height: 320px;
     overflow: auto;
     border-radius: 8px;
     border: 5px solid rgba(0, 0, 0, 0.06);
 }
-
+/* the actual students table where students are listed */
 .students-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.95rem
 }
-
 .students-table thead {
     position: sticky;
     top: 0;
@@ -123,17 +120,16 @@ button.ghost {
     z-index: 2
 }
 
-.students-table th,
-.students-table td {
+.students-table th, .students-table td {
     padding: 10px 12px;
     text-align: left;
-    border-bottom: 1px solid rgba(11, 19, 32, 0.04)
+    border-bottom: 1px solid rgba(11, 19, 32, 0.09)
 }
 
 .students-table tbody tr:hover {
-    background: rgba(0, 0, 0, 0.02)
+    background: rgba(0, 0, 0, 0.06)
+    /* should add some transitions */
 }
-
 .students-table img.avatar {
     width: 36px;
     height: 36px;
@@ -153,21 +149,21 @@ button.ghost {
     right: -430px;
     width: 380px;
     height: 100%;
+    padding: 5px 25px;
     background: rgb(203, 209, 237);
     box-shadow: -20px 0 40px rgba(2, 6, 23, 0.15);
     transition: right .28s ease;
     z-index: 30;
 }
-
-/* added class in js ig...... */
+/* added .open class in app.js */
 .drawer.open {
     right: 0px;
 }
-
 .drawer-header {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    font-size: xx-large;
 }
 
 #editForm label {
@@ -176,52 +172,51 @@ button.ghost {
     padding: 5px;
 }
 
+/* modal to confirm deletion */
 .modal {
     position: fixed;
+    top: 30vh;
+    right: 40vw;
+    padding: 20px;
     display: flex;
     visibility: hidden;
     align-items: center;
     justify-items: center;
-    transition: opacity .18s;
-    background: rgba(3, 6, 12, 0.35);
+    background: rgb(254, 180, 180);
     z-index: 40;
+    border-radius: 10px;
+    box-shadow: 12px 12px 3px rgba(0, 0, 0, 0.28);
 }
 
 
-
-
-
-
-
-
+/* SOME ISSUE HERE IN TOAST !! */
 .toast {
     position: fixed;
-    right: 18px;
-    bottom: 18px;
-    min-width: 200px;
+    right: 28px;
+    bottom: 80px;
+    min-width: 10px;
     z-index: 60;
     padding: 10px;
-    font-size: 50px;
+    font-size: 30px;
     border: #0066ff 100px;
+    border-width: 10px;
 }
+
 
 @media (max-width: 640px) {
     .container {
         grid-template-columns: 1fr;
     }
 }
-
 @media (min-width: 641px) and (max-width:1024px) {
     .container {
         grid-template-columns: 1fr 1fr;
     }
 }
-
 @media (min-width:1025px) {
     .container {
         grid-template-columns: 1fr 1.6fr
     }
-
     .table-wrap {
         max-height: 520px
     }
@@ -261,3 +256,7 @@ button.ghost {
 /* .students-table tbody tr:hover td {
     background-color: #7ec4c4;
 }  */
+
+#edit_index {
+    visibility: hidden;
+}

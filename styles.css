@@ -17,17 +17,32 @@ body.dark {
     color: #e6eef8;
 }
 
+html{
+    height: '100%';
+    width: '100%';
+    margin: '0';
+    padding: '0';    
+}
+
 body {
     background-color: var(--bg);
+    /* overflow: hidden; */
+    height: '100%';
+    width: '100%';
+    margin: '0';
+    padding: '0';
 }
+
 .site-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 10px;
 }
+
 .site-header h1 {
     margin: 0;
-    font-size: 1.25rem
+    font-size: 1.95rem
 }
 
 /* P tag */
@@ -54,7 +69,8 @@ body {
     gap: 18px;
 }
 
-.form-section,.display-section {
+.form-section,
+.display-section {
     background: var(--card);
     border-radius: var(--radius);
     padding: 16px;
@@ -89,17 +105,20 @@ button {
     cursor: pointer;
     margin: 1px;
 }
+
 /* ghost buttons are light coloured ones */
 button.ghost {
     background: transparent;
     color: var(--muted);
     border: 1px solid rgba(3, 5, 8, 0.1)
 }
+
 /* search bar */
 .topbar {
     display: flex;
     justify-content: space-around;
 }
+
 /* outside div around table */
 .table-wrap {
     max-height: 320px;
@@ -107,12 +126,14 @@ button.ghost {
     border-radius: 8px;
     border: 5px solid rgba(0, 0, 0, 0.06);
 }
+
 /* the actual students table where students are listed */
 .students-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.95rem
 }
+
 .students-table thead {
     position: sticky;
     top: 0;
@@ -120,7 +141,8 @@ button.ghost {
     z-index: 2
 }
 
-.students-table th, .students-table td {
+.students-table th,
+.students-table td {
     padding: 10px 12px;
     text-align: left;
     border-bottom: 1px solid rgba(11, 19, 32, 0.09)
@@ -128,8 +150,9 @@ button.ghost {
 
 .students-table tbody tr:hover {
     background: rgba(0, 0, 0, 0.06)
-    /* should add some transitions */
+        /* should add some transitions */
 }
+
 .students-table img.avatar {
     width: 36px;
     height: 36px;
@@ -155,10 +178,12 @@ button.ghost {
     transition: right .28s ease;
     z-index: 30;
 }
+
 /* added .open class in app.js */
 .drawer.open {
     right: 0px;
 }
+
 .drawer-header {
     display: flex;
     justify-content: space-around;
@@ -204,19 +229,29 @@ button.ghost {
 
 
 @media (max-width: 640px) {
+    .site-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+        padding: 15px 10px;
+    }
+
     .container {
         grid-template-columns: 1fr;
     }
 }
+
 @media (min-width: 641px) and (max-width:1024px) {
     .container {
         grid-template-columns: 1fr 1fr;
     }
 }
+
 @media (min-width:1025px) {
     .container {
         grid-template-columns: 1fr 1.6fr
     }
+
     .table-wrap {
         max-height: 520px
     }

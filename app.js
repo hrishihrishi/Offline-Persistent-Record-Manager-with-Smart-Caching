@@ -2,7 +2,7 @@
 const LS_KEY = "Hrishikesh"
 let students = [];  //2d array
 let pendingDeleteIndex = null;
-const PAGE_SIZE = 8
+const PAGE_SIZE = 100
 const currentPage = 1
 
 // localStorage.removeItem(LS_KEY);
@@ -42,6 +42,7 @@ function init() {
     const form = $('studentForm')
     const editForm = $('editForm')
     form.addEventListener('submit', onAdd);
+      $('exportCsvBtn').addEventListener('click', exportCsv);
     $('resetBtn').addEventListener('click', () => form.reset());
     $('search').addEventListener('input', () => { currentPage = 1; renderTable(); })
     $('themeToggle').addEventListener('click', toggleTheme)
@@ -182,13 +183,14 @@ function onSaveEdit(e){
 
 
 
-
+// called when user asks for deletion
 function requestDelete(idx){
     console.log('requestDelete called')
     pendingDeleteIndex = idx;
     toggleModal(true);
 }
 
+//  modal will open
 function toggleModal(show){
     const m = $('confirmModal');
     if(show){
@@ -201,6 +203,7 @@ function toggleModal(show){
     // m.setAttribute('aria-hidden', show ? 'false' : 'true');
 }
 
+//called when user confirms deletion
 function confirmDeleteAction(){
     if(pendingDeleteIndex === null) return;
     students.splice(pendingDeleteIndex, 1);
@@ -221,3 +224,43 @@ function toggleTheme(){
     const btn = $('themeToggle')
     btn.textContent = document.body.classList.contains('dark') ? '🌞' : '🌙';
 }
+
+function exportCsv(){
+    const headers = ['Student_Id, Student_Name, Student_email, Student_Ph']
+    const rows = students.map(s => [s.name, s.studentId, s.email, s.contact]);
+    const csv = [headers, ...rows].map(r => r.map(cell => `"${(''+cell).replace(/"/g,'""')}"`).join(',')).join('\n');
+    // Blob is browser api for storage for some short time
+    const blob = new Blob([csv], {type:'text/csv; charset=utf-8;'})
+    //URL is also browser API
+    const url = URL.createObjectURL(blob)
+
+    // creates a element, auto-clicks, deletes itself
+    const a = document.createElement('a')
+    a.href = url;
+    a.download = 'students.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    toast('CSV Exported')
+}
+
+
+// function getFiltered(){
+//   const q = $('search').value.trim().toLowerCase();
+//   let arr = students.slice();
+//   if(q){
+//     arr = arr.filter(s => s.name.toLowerCase().includes(q) || s.studentId.toLowerCase().includes(q) || s.email.toLowerCase().includes(q));
+//   }
+//   // Sorting
+//   if(sortState.key){
+//     arr.sort((a,b)=>{
+//       const A = (a[sortState.key]||'').toString().toLowerCase();
+//       const B = (b[sortState.key]||'').toString().toLowerCase();
+//       if(A < B) return -1 * sortState.dir;
+//       if(A > B) return 1 * sortState.dir;
+//       return 0;
+//     });
+//   }
+//   return arr;
+// }
